@@ -2,6 +2,7 @@ name: Build Taxacalc API
 
 on:
   push:
+    #Trigger build on push to any branch  
     branches:
         - "**"
 
