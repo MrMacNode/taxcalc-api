@@ -8,7 +8,7 @@ namespace TaxcalcApi.Core.Services
     {
         public async Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary)
         {
-            var taxBands = (await GetTaxBands.Execute()).OrderBy(tb => tb.LowerLimit).ToList();
+            var taxBands = await GetTaxBands.Execute() ?? [];
             decimal annualTax = 0;
             foreach(var taxBand in taxBands)
             {
@@ -16,16 +16,18 @@ namespace TaxcalcApi.Core.Services
             }
             return new()
             {
-                GrossAnnualSalary = annualSalary,
-                GrossMonthlySalary = annualSalary / 12,
-                NetAnnualSalary = annualSalary - annualTax,
-                NetMonthlySalary = (annualSalary - annualTax) / 12,
-                AnnualTaxPaid = annualTax,
-                MonthlyTaxPaid = annualTax / 12
+                GrossAnnualSalary = ToCurrency(annualSalary),
+                GrossMonthlySalary = ToCurrency(annualSalary / 12),
+                NetAnnualSalary = ToCurrency(annualSalary - annualTax),
+                NetMonthlySalary = ToCurrency((annualSalary - annualTax) / 12),
+                AnnualTaxPaid = ToCurrency(annualTax),
+                MonthlyTaxPaid = ToCurrency(annualTax / 12)
             };
         }
 
-        private static decimal CalculateTaxableIncome(decimal annualSalary, TaxBand taxBand)
+        protected static decimal ToCurrency(decimal amount) => Math.Round(amount, 2, MidpointRounding.AwayFromZero);
+
+        protected static decimal CalculateTaxableIncome(decimal annualSalary, TaxBand taxBand)
         {
             if (annualSalary > taxBand.LowerLimit)
             {
