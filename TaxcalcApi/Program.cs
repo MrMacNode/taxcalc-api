@@ -1,5 +1,3 @@
-
-
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Routing.Constraints;
@@ -7,8 +5,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
 using TaxcalcApi.Api.Dtos;
 using TaxcalcApi.Api.Endpoints;
+using TaxcalcApi.Api.Middleware;
 using TaxcalcApi.Api.Validators;
 using TaxcalcApi.Core.Services;
+using TaxcalcApi.Infrastructure.Configuration;
 using TaxcalcApi.Infrastructure.Database.Repositories;
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -24,10 +24,7 @@ builder.Services.Configure<JsonOptions>(static options =>
         new DefaultJsonTypeInfoResolver());
 });
 
-//TODO: Add logging
-
- 
-
+builder.ConfigureLogging();
 
 builder.Services.ConfigureHttpJsonOptions(opt =>
 {
@@ -38,11 +35,9 @@ builder.Services.ConfigureHttpJsonOptions(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 builder.Services.AddScoped<ITaxBandRepository, TaxBandRepository>();
 builder.Services.AddScoped<IIncomeTaxCalculator, IncomeTaxCalculator>();
 builder.Services.AddScoped<IValidator<IncomeTaxQueryModel>, IncomeTaxQueryModelValidator>();
-//TODO: Add validators
 
 var app = builder.Build();
 
@@ -52,7 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//TODO: Add endpoints
+app.UseMiddleware<ResponseLoggingMiddleware>();
+
 app.MapIncomeTaxEndpoints();
 
 await app.RunAsync();
