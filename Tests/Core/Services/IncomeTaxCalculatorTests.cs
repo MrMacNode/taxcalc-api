@@ -4,7 +4,7 @@ using Moq;
 using TaxcalcApi.Core.Models;
 using TaxcalcApi.Core.Services;
 using TaxcalcApi.Infrastructure.Database.Entities;
-using TaxcalcApi.Infrastructure.Database.Queries;
+using TaxcalcApi.Infrastructure.Database.Repositories;
 using Xunit;
 
 namespace Tests.Core.Services;
@@ -64,8 +64,8 @@ public class IncomeTaxCalculatorTests
                 },
             };
 
-        var mockGetTaxBands = new Mock<IGetUkTaxBands>();
-        mockGetTaxBands.Setup(x => x.Execute()).ReturnsAsync(taxBands);
+        var mockGetTaxBands = new Mock<ITaxBandRepository>();
+        mockGetTaxBands.Setup(x => x.GetAllAsync()).ReturnsAsync(taxBands);
 
         var calculator = new IncomeTaxCalculator(mockGetTaxBands.Object);
 

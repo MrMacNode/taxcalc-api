@@ -1,14 +1,14 @@
 ﻿using TaxcalcApi.Core.Models;
 using TaxcalcApi.Infrastructure.Database.Entities;
-using TaxcalcApi.Infrastructure.Database.Queries;
+using TaxcalcApi.Infrastructure.Database.Repositories;
 
 namespace TaxcalcApi.Core.Services
 {
-    public class IncomeTaxCalculator(IGetUkTaxBands GetTaxBands) : IIncomeTaxCalculator
+    public class IncomeTaxCalculator(ITaxBandRepository repository) : IIncomeTaxCalculator
     {
         public async Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary)
         {
-            var taxBands = await GetTaxBands.Execute() ?? [];
+            var taxBands = await repository.GetAllAsync() ?? [];
             decimal annualTax = 0;
             foreach(var taxBand in taxBands)
             {
@@ -29,15 +29,17 @@ namespace TaxcalcApi.Core.Services
 
         protected static decimal CalculateTaxableIncome(decimal annualSalary, TaxBand taxBand)
         {
-            if (annualSalary > taxBand.LowerLimit)
+            if (annualSalary <= taxBand.LowerLimit)
             {
-                if(taxBand.UpperLimit is not null && annualSalary > taxBand.UpperLimit)
-                {
-                    return taxBand.UpperLimit.Value - taxBand.LowerLimit;
-                }
-                return Math.Max(0, annualSalary - taxBand.LowerLimit);
+                return 0;
             }
-            return 0;
+
+            if(taxBand.UpperLimit is not null && annualSalary > taxBand.UpperLimit)
+            {
+                return taxBand.UpperLimit.Value - taxBand.LowerLimit;
+            }
+
+            return Math.Max(0, annualSalary - taxBand.LowerLimit);
         }
     }
 }

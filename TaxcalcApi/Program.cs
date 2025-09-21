@@ -9,7 +9,7 @@ using TaxcalcApi.Api.Dtos;
 using TaxcalcApi.Api.Endpoints;
 using TaxcalcApi.Api.Validators;
 using TaxcalcApi.Core.Services;
-using TaxcalcApi.Infrastructure.Database.Queries;
+using TaxcalcApi.Infrastructure.Database.Repositories;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
@@ -39,7 +39,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddScoped<IGetUkTaxBands, GetUkTaxBands>();
+builder.Services.AddScoped<ITaxBandRepository, TaxBandRepository>();
 builder.Services.AddScoped<IIncomeTaxCalculator, IncomeTaxCalculator>();
 builder.Services.AddScoped<IValidator<IncomeTaxQueryModel>, IncomeTaxQueryModelValidator>();
 //TODO: Add validators
