@@ -13,6 +13,10 @@ using TaxcalcApi.Infrastructure.Database.Repositories;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
+
+builder.Services.AddAuthentication();
+
 builder.Services.Configure<RouteOptions>(options =>
 {
     options.SetParameterPolicy<RegexInlineRouteConstraint>("regex");
@@ -39,6 +43,11 @@ builder.Services.AddScoped<ITaxBandRepository, TaxBandRepository>();
 builder.Services.AddScoped<IIncomeTaxCalculator, IncomeTaxCalculator>();
 builder.Services.AddScoped<IValidator<IncomeTaxQueryModel>, IncomeTaxQueryModelValidator>();
 
+builder.WebHost.UseKestrel(options =>
+{
+    options.ConfigureHttpsDefaults(httpsOptions => { });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -46,6 +55,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
 
 app.UseMiddleware<ResponseLoggingMiddleware>();
 

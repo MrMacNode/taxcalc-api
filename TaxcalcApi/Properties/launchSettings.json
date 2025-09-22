@@ -1,10 +1,21 @@
 {
   "profiles": {
+    "https": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:7149;http://localhost:5149",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "true"
+      },
+      "dotnetRunMessages": true
+    },
     "http": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "true"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5149/swagger/index.html"
@@ -14,10 +25,12 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger/index.html",
       "environmentVariables": {
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "ASPNETCORE_HTTPS_PORTS": "8443",
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "true"
       },
       "publishAllPorts": true,
-      "useSSL": false
+      "useSSL": true
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json"
