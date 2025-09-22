@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Serilog;
 using TaxcalcApi.Api.Dtos;
 using TaxcalcApi.Core.Services;
 
@@ -36,6 +37,10 @@ namespace TaxcalcApi.Api.Handlers
             {
                 logger.LogError(ex, "An error occurred while calculating UK income tax for annual salary: {AnnualSalary}", parameters.AnnualSalaryString);
                 return Results.Problem("An internal server error occurred while processing your request.");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
             }
         }
     }
