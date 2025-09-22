@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using TaxcalcApi.Core.Models;
@@ -41,36 +42,40 @@ public class IncomeTaxCalculatorTests
     {
         // Arrange: Setup mock tax bands for a simple progressive tax system
         var taxBands = new List<TaxBand>
+        {
+            new()
             {
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    LowerLimit = 0,
-                    UpperLimit = 5000,
-                    Rate = 0
-                },
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    LowerLimit = 5000,
-                    UpperLimit = 20000,
-                    Rate = 20
-                },
-                new()
-                {
-                    Id = Guid.NewGuid(),
-                    LowerLimit = 20000,
-                    Rate = 40
-                },
-            };
+                Id = Guid.NewGuid(),
+                LowerLimit = 0,
+                UpperLimit = 5000,
+                Rate = 0
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                LowerLimit = 5000,
+                UpperLimit = 20000,
+                Rate = 20
+            },
+            new()
+            {
+                Id = Guid.NewGuid(),
+                LowerLimit = 20000,
+                Rate = 40
+            },
+        };
+
+        var cancellationToken = new CancellationToken();
 
         var mockGetTaxBands = new Mock<ITaxBandRepository>();
-        mockGetTaxBands.Setup(x => x.GetAllAsync()).ReturnsAsync(taxBands);
+        mockGetTaxBands
+            .Setup(x => x.GetAllAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(taxBands);
 
         var calculator = new IncomeTaxCalculator(mockGetTaxBands.Object);
 
         // Act
-        var result = await calculator.CalculateUkAnnual(annualSalary);
+        var result = await calculator.CalculateUkAnnual(annualSalary, cancellationToken);
 
         // Assert
         Assert.Equal(expectedGrossAnnualSalary, result.GrossAnnualSalary);
