@@ -6,7 +6,7 @@
       "applicationUrl": "https://localhost:7149;http://localhost:5149",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "true"
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "false"
       },
       "dotnetRunMessages": true
     },
@@ -15,7 +15,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "true"
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "false"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5149/swagger/index.html"
@@ -27,7 +27,7 @@
       "environmentVariables": {
         "ASPNETCORE_HTTP_PORTS": "8080",
         "ASPNETCORE_HTTPS_PORTS": "8443",
-        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "true"
+        "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "false"
       },
       "publishAllPorts": true,
       "useSSL": true
