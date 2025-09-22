@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Moq;
-using TaxcalcApi.Core.Models;
+﻿using Moq;
 using TaxcalcApi.Core.Services;
 using TaxcalcApi.Infrastructure.Database.Entities;
 using TaxcalcApi.Infrastructure.Database.Repositories;
-using Xunit;
 
 namespace Tests.Core.Services;
 
