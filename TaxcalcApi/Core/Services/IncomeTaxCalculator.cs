@@ -5,11 +5,11 @@ using TaxcalcApi.Infrastructure.Database.Repositories;
 
 namespace TaxcalcApi.Core.Services
 {
-    public class IncomeTaxCalculator(ITaxBandRepository repository) : IIncomeTaxCalculator
+    public class IncomeTaxCalculator(ITaxBandRepository _repository) : IIncomeTaxCalculator
     {
         public async Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary, CancellationToken cancellationToken)
         {
-            var taxBands = await repository.GetAllAsync(cancellationToken) ?? [];
+            var taxBands = await _repository.GetAllAsync(cancellationToken) ?? [];
             decimal annualTax = 0;
             foreach(var taxBand in taxBands)
             {
