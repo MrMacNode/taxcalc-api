@@ -1,5 +1,6 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
+using System.Data;
 using TaxcalcApi.Infrastructure.Database.Entities;
 
 namespace TaxcalcApi.Infrastructure.Database.Repositories
@@ -24,9 +25,15 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
             _logger.LogInformation("Fetching all tax bands from database.");
             using var connection = new SqlConnection(_connectionString);
             return await connection.QueryAsync<TaxBand>(
-                "GetAllTaxBands",
-                cancellationToken,
-                commandType: System.Data.CommandType.StoredProcedure 
+                new CommandDefinition(
+                    "GetAllTaxBands",
+                    parameters: null,
+                    transaction: null,
+                    commandTimeout: null,
+                    commandType: CommandType.StoredProcedure,
+                    flags: CommandFlags.Buffered,
+                    cancellationToken: cancellationToken
+                )
             );
         }
     }
