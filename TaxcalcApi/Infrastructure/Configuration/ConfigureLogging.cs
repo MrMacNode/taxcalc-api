@@ -18,10 +18,11 @@ namespace TaxcalcApi.Infrastructure.Configuration
         /// - Lack of logging configuration will cause the application to throw an exception at startup. (Fail fast)
         /// - In the event of issues with logging, console debug logs are enabled as a fallback to troubleshoot logging problems.
         /// </remarks>
+        /// 
         public static WebApplicationBuilder ConfigureLogging(this WebApplicationBuilder builder)
         {
             // As a fallback for grafana logs, enable console logs for internal debugging.
-            Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
+            //Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
             //Get logging configuration. 
             string loggingUri = builder.TryGetConfigurationString("logging__uri")!;
@@ -29,23 +30,27 @@ namespace TaxcalcApi.Infrastructure.Configuration
             string loggingToken = builder.TryGetConfigurationString("logging__token")!;
 
             // Configure Serilog to use Grafana Loki as a logging sink.
-            builder.Host.UseSerilog((context, services, configuration) => configuration
-               .ReadFrom.Configuration(context.Configuration)
-               .WriteTo.GrafanaLoki(
-                    loggingUri,
-                    labels:
-                    [
-                        new LokiLabel { Key = "environment", Value = builder.Environment.EnvironmentName },
-                        new LokiLabel { Key = "application", Value = builder.Environment.ApplicationName }
-                    ],
-                    credentials: new()
-                    {
-                        Login = loggingSA,
-                        Password = loggingToken,
-                    }
-               )
-           );
-           return builder;
+            builder.Host.UseSerilog((context, services, configuration) =>
+            {
+                configuration
+                    .MinimumLevel.Debug()
+                    .WriteTo.Console()
+                    .WriteTo.Debug()
+                    .WriteTo.GrafanaLoki(
+                        loggingUri,
+                        labels:
+                        [
+                            new LokiLabel { Key = "environment", Value = builder.Environment.EnvironmentName },
+                            new LokiLabel { Key = "application", Value = builder.Environment.ApplicationName }
+                        ],
+                        credentials: new()
+                        {
+                            Login = loggingSA,
+                            Password = loggingToken
+                        }
+                    );
+            });
+            return builder;
         }
     }
 }
