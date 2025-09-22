@@ -3,11 +3,18 @@ using System.Runtime.CompilerServices;
 
 namespace TaxcalcApi.Api.Dtos
 {
+    /// <summary>
+    /// Parameter model for income tax calculation queries.
+    /// </summary>
     public record IncomeTaxQueryModel
     {
         private string? _annualSalaryString = string.Empty;
         private decimal _annualSalary = 0;
 
+
+        /// <summary>
+        /// Front-end parameter for annual salary. This is a string to facilitate validation and control messaging.
+        /// </summary>
         [property: FromQuery(Name = "annualSalary")]
         public string? AnnualSalaryString
         { 
@@ -22,6 +29,9 @@ namespace TaxcalcApi.Api.Dtos
             }
         }
 
+        /// <summary>
+        /// Annual salary as a parsed, validated decimal value.
+        /// </summary>
         public decimal AnnualSalary
         {
             get => _annualSalary;
