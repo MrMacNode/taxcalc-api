@@ -4,6 +4,6 @@ namespace TaxcalcApi.Core.Services
 {
     public interface IIncomeTaxCalculator
     {
-        Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary);
+        Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary, CancellationToken cancellationToken);
     }
 }

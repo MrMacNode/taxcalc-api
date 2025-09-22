@@ -1,4 +1,5 @@
-﻿using TaxcalcApi.Core.Models;
+﻿using System.Threading;
+using TaxcalcApi.Core.Models;
 using TaxcalcApi.Infrastructure.Database.Entities;
 using TaxcalcApi.Infrastructure.Database.Repositories;
 
@@ -6,9 +7,9 @@ namespace TaxcalcApi.Core.Services
 {
     public class IncomeTaxCalculator(ITaxBandRepository repository) : IIncomeTaxCalculator
     {
-        public async Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary)
+        public async Task<IncomeTaxResult> CalculateUkAnnual(decimal annualSalary, CancellationToken cancellationToken)
         {
-            var taxBands = await repository.GetAllAsync() ?? [];
+            var taxBands = await repository.GetAllAsync(cancellationToken) ?? [];
             decimal annualTax = 0;
             foreach(var taxBand in taxBands)
             {

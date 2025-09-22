@@ -11,13 +11,14 @@ namespace TaxcalcApi.Api.Handlers
             ILogger<IncomeTaxQueryModel> logger,
             IIncomeTaxCalculator incomeTaxCalculator,
             IValidator<IncomeTaxQueryModel> validator,
-            [AsParameters] IncomeTaxQueryModel parameters
+            [AsParameters] IncomeTaxQueryModel parameters, 
+            CancellationToken cancellationToken
             )
         {
             try
             {
                 logger.LogInformation("Received request to calculate UK income tax for annual salary: {AnnualSalary}", parameters.AnnualSalaryString);
-                var validationResult = await validator.ValidateAsync(parameters);
+                var validationResult = await validator.ValidateAsync(parameters, cancellationToken);
                 if (!validationResult.IsValid)
                 {
                     logger.LogWarning("Validation failed for annual salary: {AnnualSalary}. Errors: {Errors}",
@@ -29,9 +30,14 @@ namespace TaxcalcApi.Api.Handlers
                         .ToList();
                     return Results.BadRequest(new { Errors = errors });
                 }
-                var result = await incomeTaxCalculator.CalculateUkAnnual(parameters.AnnualSalary);
+                var result = await incomeTaxCalculator.CalculateUkAnnual(parameters.AnnualSalary, cancellationToken);
                 logger.LogInformation("Successfully calculated UK income tax for annual salary.");
                 return Results.Ok(result);
+            }
+            catch (OperationCanceledException)
+            {
+                logger.LogWarning("Request was cancelled by the client.");
+                return Results.StatusCode(StatusCodes.Status499ClientClosedRequest);
             }
             catch (Exception ex)
             {

@@ -4,6 +4,6 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories;
 
 public interface ITaxBandRepository
 {
-    Task<IEnumerable<TaxBand>> GetAllAsync();
+    Task<IEnumerable<TaxBand>> GetAllAsync(CancellationToken cancellationToken);
 }
 
