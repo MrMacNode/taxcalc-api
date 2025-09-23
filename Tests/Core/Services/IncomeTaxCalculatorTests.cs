@@ -26,7 +26,7 @@ public class IncomeTaxCalculatorTests
         11000,
         916.67
     )]
-    public async Task CalculateUkAnnual_ReturnsExpectedResult(
+    public async Task CalculateUkAnnualReturnsExpectedResult(
         decimal annualSalary,
         decimal expectedGrossAnnualSalary,
         decimal expectedGrossMonthlySalary,
