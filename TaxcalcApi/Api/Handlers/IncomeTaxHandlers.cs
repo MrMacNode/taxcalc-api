@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using FluentValidation.Results;
 using Serilog;
 using TaxcalcApi.Api.Dtos;
 using TaxcalcApi.Core.Services;
@@ -31,14 +32,14 @@ namespace TaxcalcApi.Api.Handlers
                 var validationResult = await validator.ValidateAsync(parameters, cancellationToken);
                 if (!validationResult.IsValid)
                 {
+                    var errors = validationResult.Errors
+                        .Select(e => $"[{e.PropertyName}] {e.ErrorMessage}");
+
                     logger.LogWarning("Validation failed for annual salary: {AnnualSalary}. Errors: {Errors}",
                         parameters.AnnualSalaryString,
-                        string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
+                        string.Join("; ", errors));
 
-                    var errors = validationResult.Errors
-                        .Select(e => new { e.PropertyName, e.ErrorMessage })
-                        .ToList();
-                    return Results.BadRequest(new { Errors = errors });
+                    return Results.BadRequest(errors);
                 }
 
                 var result = await incomeTaxCalculator.CalculateUkAnnual(parameters.AnnualSalary, cancellationToken);
