@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using TaxcalcApi.Core.Models;
+﻿using TaxcalcApi.Core.Models;
 using TaxcalcApi.Infrastructure.Database.Entities;
 using TaxcalcApi.Infrastructure.Database.Repositories;
 
