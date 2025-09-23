@@ -15,6 +15,22 @@ var builder = WebApplication.CreateSlimBuilder(args);
 
 Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
+
+// Setting CORS to allow all origins. 
+// - This is a public read-only API
+// - Although we have a UI in mind, other clients may wish to use it.
+// - No business rules restricting usage have been provided.
+// - If any of this changes, we can add a more restrictive CORS policy.
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+          .WithMethods("GET")
+          .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication();
 
 builder.Services.Configure<RouteOptions>(options =>
@@ -58,6 +74,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
+
+app.UseCors();
 
 app.UseMiddleware<ResponseLoggingMiddleware>();
 
