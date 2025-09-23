@@ -5,6 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace TaxcalcApi.Api.Middleware;
 
+/// <summary>
+/// Response to add a log for the response body from the API.
+/// </summary>
+/// <remarks>
+///     - Middleware provides us with more assurance that the logs will be posted, independently of unexpected problems found in operations.
+///     - A similar approach could be used for request logging if needed.
+/// </remarks>
 public class ResponseLoggingMiddleware(RequestDelegate _next, ILogger<ResponseLoggingMiddleware> _logger)
 {
     public async Task Invoke(HttpContext context)

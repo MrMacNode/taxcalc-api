@@ -57,6 +57,7 @@ namespace TaxcalcApi.Api.Handlers
             }
             finally
             {
+                //Make sure logs are flushed before exiting.
                 Log.CloseAndFlush();
             }
         }

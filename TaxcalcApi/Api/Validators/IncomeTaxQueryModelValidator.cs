@@ -3,6 +3,13 @@ using TaxcalcApi.Api.Dtos;
 
 namespace TaxcalcApi.Api.Validators
 {
+    /// <summary>
+    /// A validator for income tax query parameters.
+    /// </summary>
+    /// <remarks>
+    ///     - Guarantees that the annual salary parameter is provided, is a valid number, and is non-negative.
+    ///     - Controls bad request error messages for invalid input.
+    /// </remarks>
     public class IncomeTaxQueryModelValidator : AbstractValidator<IncomeTaxQueryModel>
     {
         public IncomeTaxQueryModelValidator()

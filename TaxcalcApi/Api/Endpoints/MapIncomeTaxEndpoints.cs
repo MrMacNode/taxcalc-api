@@ -5,6 +5,14 @@ namespace TaxcalcApi.Api.Endpoints
 {
     public static class IncomeTaxEndpoints
     {
+        /// <summary>
+        /// Mappings for income tax endpoints.
+        /// </summary>
+        /// <remarks>
+        ///     - This method sets up the routing for income tax calculation endpoints. (Currently only one)
+        ///     - /uk endpoint calculates UK income tax based on an annual salary provided as a query parameter.
+        ///     - We could add /us, /ca, /au etc. endpoints in the future if needed.
+        /// </remarks>
         public static IEndpointRouteBuilder MapIncomeTaxEndpoints(this IEndpointRouteBuilder app)
         {
             app.MapGet("/api/incometax/uk", IncomeTaxHandlers.GetUkIncomeTax)
