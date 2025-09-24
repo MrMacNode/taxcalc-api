@@ -55,7 +55,7 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
                         "GetAllTaxBands",
                         parameters: null,
                         transaction: null,
-                        commandTimeout: null,
+                        commandTimeout: 10,
                         commandType: CommandType.StoredProcedure,
                         flags: CommandFlags.Buffered,
                         cancellationToken: cancellationToken
@@ -70,9 +70,9 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
             });
         }
 
-        //List of SQL error numbers that are considered transient and worth retrying.
+        //List of SQL error numbers that we'll retry as transient errors.
         //Some of these errors are quite broad, but we'll retry a set number of times before failing.
-        //TODO: Put these in config? Company standards may dictate this, and company standards change.
+        //TODO: Put these in config? Company standards may dictate which of these should be retried, and company standards change.
         private static readonly HashSet<int> TransientErrorNumbers =
         [
             4060, //Cannot open database
