@@ -73,6 +73,7 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
         //List of SQL error numbers that we'll retry as transient errors.
         //Some of these errors are quite broad, but we'll retry a set number of times before failing.
         //TODO: Put these in config? Company standards may dictate which of these should be retried, and company standards change.
+        // (We're also being a bit presumptive that we're using SQL Server; codes could change depending on the database engine.)
         public static readonly HashSet<int> TransientErrorNumbers =
         [
             4060, //Cannot open database
