@@ -45,6 +45,16 @@ public class IncomeTaxQueryModelValidatorTests
     }
 
     [Theory]
+    [InlineData("4000000000000")]
+    public void RidiculousNumberIsInvalid(string bigNumberString)
+    {
+        var model = new IncomeTaxQueryModel { AnnualSalaryString = bigNumberString };
+        var result = validator.TestValidate(model);
+        result.ShouldHaveValidationErrorFor(x => x.AnnualSalary)
+            .WithErrorMessage("Annual salary must be less than three trillion. Are you a country?");
+    }
+
+    [Theory]
     [InlineData("0")]
     [InlineData("1000")]
     [InlineData("123456.78")]
