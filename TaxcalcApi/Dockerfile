@@ -11,8 +11,8 @@ WORKDIR "/src/TaxcalcApi"
 RUN dotnet publish "TaxcalcApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=true
 
 # Final runtime image
-FROM mcr.microsoft.com/dotnet/runtime-deps:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 7149
 COPY --from=build /app/publish .
 ENTRYPOINT ["./TaxcalcApi"]

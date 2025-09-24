@@ -25,9 +25,9 @@ namespace TaxcalcApi.Infrastructure.Configuration
             //Serilog.Debugging.SelfLog.Enable(Console.WriteLine);
 
             //Get logging configuration. 
-            string loggingUri = builder.TryGetConfigurationString("logging__uri")!;
-            string loggingLogin = builder.TryGetConfigurationString("logging__login")!;
-            string loggingToken = builder.TryGetConfigurationString("logging__token")!;
+            string loggingUri = builder.TryGetConfigurationString("loggingUri")!;
+            string loggingLogin = builder.TryGetConfigurationString("loggingLogin")!;
+            string loggingToken = builder.TryGetConfigurationString("loggingToken")!;
 
             // Configure Serilog to use Grafana Loki as a logging sink.
             builder.Host.UseSerilog((context, services, configuration) =>

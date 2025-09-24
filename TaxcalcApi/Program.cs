@@ -59,10 +59,7 @@ builder.ConfigureDatabase();
 builder.Services.AddScoped<IIncomeTaxCalculator, IncomeTaxCalculator>();
 builder.Services.AddSingleton<IValidator<IncomeTaxQueryModel>, IncomeTaxQueryModelValidator>();
 
-builder.WebHost.UseKestrel(options =>
-{
-    options.ConfigureHttpsDefaults(httpsOptions => { });
-});
+builder.WebHost.UseKestrel(options => options.ListenAnyIP(7149));
 
 var app = builder.Build();
 
@@ -77,6 +74,8 @@ app.UseAuthentication();
 app.UseCors();
 
 app.UseMiddleware<ResponseLoggingMiddleware>();
+
+app.MapGet("/health", () => Results.Ok("Healthy"));
 
 app.MapIncomeTaxEndpoints();
 

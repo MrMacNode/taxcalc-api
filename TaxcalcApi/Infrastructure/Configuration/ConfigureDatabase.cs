@@ -7,7 +7,7 @@ namespace TaxcalcApi.Infrastructure.Configuration
         public static IHostApplicationBuilder ConfigureDatabase(this IHostApplicationBuilder builder)
         {
             // Get the database connection string from configuration. Fail fast if not present.
-            string connectionString = builder.TryGetConfigurationString("DATABASE__CONNECTION_STRING")!;
+            string connectionString = builder.TryGetConfigurationString("dbConnectionString")!;
 
             // Register the SQL connection factory
             builder.Services.AddSingleton<IDbConnectionFactory>(sp => new DbConnectionFactory(connectionString));
