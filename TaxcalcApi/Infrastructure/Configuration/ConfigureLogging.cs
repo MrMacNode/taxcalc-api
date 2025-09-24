@@ -26,7 +26,7 @@ namespace TaxcalcApi.Infrastructure.Configuration
 
             //Get logging configuration. 
             string loggingUri = builder.TryGetConfigurationString("logging__uri")!;
-            string loggingSA = builder.TryGetConfigurationString("logging__sa")!;
+            string loggingLogin = builder.TryGetConfigurationString("logging__login")!;
             string loggingToken = builder.TryGetConfigurationString("logging__token")!;
 
             // Configure Serilog to use Grafana Loki as a logging sink.
@@ -45,7 +45,7 @@ namespace TaxcalcApi.Infrastructure.Configuration
                         ],
                         credentials: new()
                         {
-                            Login = loggingSA,
+                            Login = loggingLogin,
                             Password = loggingToken
                         }
                     );
