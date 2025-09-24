@@ -33,7 +33,7 @@ namespace TaxcalcApi.Api.Handlers
                 if (!validationResult.IsValid)
                 {
                     var errors = validationResult.Errors
-                        .Select(e => $"[{e.PropertyName}] {e.ErrorMessage}");
+                        .Select(e => e.ErrorMessage);
 
                     logger.LogWarning("Validation failed for annual salary: {AnnualSalary}. Errors: {Errors}",
                         parameters.AnnualSalaryString,
