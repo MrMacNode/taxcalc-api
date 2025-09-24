@@ -55,10 +55,9 @@ builder.Services.ConfigureHttpJsonOptions(opt =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddMemoryCache();
-builder.Services.AddScoped<ITaxBandRepository, TaxBandRepository>();
+builder.ConfigureDatabase();
 builder.Services.AddScoped<IIncomeTaxCalculator, IncomeTaxCalculator>();
-builder.Services.AddScoped<IValidator<IncomeTaxQueryModel>, IncomeTaxQueryModelValidator>();
+builder.Services.AddSingleton<IValidator<IncomeTaxQueryModel>, IncomeTaxQueryModelValidator>();
 
 builder.WebHost.UseKestrel(options =>
 {

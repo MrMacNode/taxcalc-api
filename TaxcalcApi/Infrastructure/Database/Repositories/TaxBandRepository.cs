@@ -16,27 +16,8 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
     ///     - Includes retry logic for transient faults using Polly.
     ///     - Caches results in memory to reduce database load.
     /// </remarks>
-    public class TaxBandRepository : ITaxBandRepository
+    public class TaxBandRepository(ILogger<TaxBandRepository> _logger, IMemoryCache _cache, ISqlConnectionFactory _connectionFactory) : ITaxBandRepository
     {
-        private readonly string _connectionString;
-        private readonly ILogger<TaxBandRepository> _logger;
-        private readonly IMemoryCache _cache;
-
-        //TODO: Create a builder extension method to validate configuration settings at startup.
-        public TaxBandRepository(IConfiguration configuration, IMemoryCache cache, ILogger<TaxBandRepository> logger)
-        {
-            _connectionString = configuration["DATABASE__CONNECTION_STRING"]!;
-
-            //Fail fast if the connection string is not configured.
-            if (string.IsNullOrWhiteSpace(_connectionString))
-            {
-                throw new ArgumentException("Database connection string is not configured properly.");
-            }
-
-            _logger = logger;
-            _cache = cache;
-        }
-
         /// <summary>
         /// Retrieves all tax bands from the database, with caching and retry logic for transient faults.
         /// </summary>
@@ -68,7 +49,7 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
             return await RetryPolicy.ExecuteAsync(async () =>
             {
                 //Run the query
-                using var connection = new SqlConnection(_connectionString);
+                using var connection = _connectionFactory.GetSqlConnection();
                 var taxBands = await connection.QueryAsync<TaxBand>(
                     new CommandDefinition(
                         "GetAllTaxBands",
