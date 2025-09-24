@@ -16,7 +16,7 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
     ///     - Includes retry logic for transient faults using Polly.
     ///     - Caches results in memory to reduce database load.
     /// </remarks>
-    public class TaxBandRepository(ILogger<TaxBandRepository> _logger, IMemoryCache _cache, ISqlConnectionFactory _connectionFactory) : ITaxBandRepository
+    public class TaxBandRepository(ILogger<TaxBandRepository> _logger, IMemoryCache _cache, IDbConnectionFactory _connectionFactory) : ITaxBandRepository
     {
         /// <summary>
         /// Retrieves all tax bands from the database, with caching and retry logic for transient faults.
@@ -49,7 +49,7 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
             return await RetryPolicy.ExecuteAsync(async () =>
             {
                 //Run the query
-                using var connection = _connectionFactory.GetSqlConnection();
+                using var connection = _connectionFactory.GetDbConnection();
                 var taxBands = await connection.QueryAsync<TaxBand>(
                     new CommandDefinition(
                         "GetAllTaxBands",
@@ -73,7 +73,7 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories
         //List of SQL error numbers that we'll retry as transient errors.
         //Some of these errors are quite broad, but we'll retry a set number of times before failing.
         //TODO: Put these in config? Company standards may dictate which of these should be retried, and company standards change.
-        private static readonly HashSet<int> TransientErrorNumbers =
+        public static readonly HashSet<int> TransientErrorNumbers =
         [
             4060, //Cannot open database
             10928, 10929, //Resource Limit Errors

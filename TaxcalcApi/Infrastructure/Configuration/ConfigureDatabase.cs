@@ -10,7 +10,7 @@ namespace TaxcalcApi.Infrastructure.Configuration
             string connectionString = builder.TryGetConfigurationString("DATABASE__CONNECTION_STRING")!;
 
             // Register the SQL connection factory
-            builder.Services.AddSingleton<ISqlConnectionFactory>(sp => new SqlConnectionFactory(connectionString));
+            builder.Services.AddSingleton<IDbConnectionFactory>(sp => new DbConnectionFactory(connectionString));
 
             // Register a cache for the repository to use.
             builder.Services.AddMemoryCache();

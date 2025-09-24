@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace TaxcalcApi.Infrastructure.Database.Repositories;
 
@@ -9,16 +10,16 @@ namespace TaxcalcApi.Infrastructure.Database.Repositories;
 /// - For more complex or demanding scenarios, we could implement connection pooling, logging, or other cross-cutting concerns here.
 /// - This factory also makes it easier to mock or stub out database connections for testing.
 /// </summary>
-public interface ISqlConnectionFactory
+public interface IDbConnectionFactory
 {
-    SqlConnection GetSqlConnection();
+    IDbConnection GetDbConnection();
 }
 
-public class SqlConnectionFactory : ISqlConnectionFactory
+public class DbConnectionFactory : IDbConnectionFactory
 {
     private readonly string _connectionString;
 
-    public SqlConnectionFactory(string connectionString)
+    public DbConnectionFactory(string connectionString)
     {
         if (string.IsNullOrWhiteSpace(connectionString))
             throw new ArgumentException("Connection string must be provided.", nameof(connectionString));
@@ -26,7 +27,7 @@ public class SqlConnectionFactory : ISqlConnectionFactory
         _connectionString = connectionString;
     }
 
-    public SqlConnection GetSqlConnection()
+    public IDbConnection GetDbConnection()
     {
         return new SqlConnection(_connectionString);
     }
