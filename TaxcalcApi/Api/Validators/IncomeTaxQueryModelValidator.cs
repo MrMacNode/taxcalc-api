@@ -23,7 +23,9 @@ namespace TaxcalcApi.Api.Validators
                 .WithName("AnnualSalary");
             RuleFor(x => x.AnnualSalary)
                 .GreaterThanOrEqualTo(0)
-                .WithMessage("Annual salary must be non-negative.");
+                .WithMessage("Annual salary must be non-negative.")
+                .LessThan(3000000000000)
+                .WithMessage("Annual salary must be less than three trillion. Are you a country?");
         }
     }
 }

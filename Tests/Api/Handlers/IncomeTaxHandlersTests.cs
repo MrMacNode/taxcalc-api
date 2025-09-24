@@ -79,7 +79,7 @@ public class IncomeTaxHandlersTests
         var responseErrors = badRequest.Value;
         Assert.NotNull(responseErrors);
         Assert.Single(responseErrors);
-        Assert.Equal("[AnnualSalary] Annual salary is required", responseErrors.First());
+        Assert.Equal("Annual salary is required", responseErrors.First());
     }
 
     [Fact]
