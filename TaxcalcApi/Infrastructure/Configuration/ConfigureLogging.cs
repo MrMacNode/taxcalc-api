@@ -13,7 +13,7 @@ namespace TaxcalcApi.Infrastructure.Configuration
         /// <remarks>
         /// - Ensure the following configuration settings are provided:
         ///     - logging__uri: The URI of the Loki/Grafana instance.
-        ///     - logging__sa: The service account or username for authentication.
+        ///     - logging__login: The service account or username for authentication.
         ///     - logging__token: The authentication token or password.
         /// - Lack of logging configuration will cause the application to throw an exception at startup. (Fail fast)
         /// - In the event of issues with logging, console debug logs are enabled as a fallback to troubleshoot logging problems.
