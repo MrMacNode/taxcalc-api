@@ -11,3 +11,4 @@ An api to calculate income tax according to predefined tax bands.
 
 - Github actions will build and test the solution at each push to a branch.
 - CI/CD deploy still pending.
+- By design, the application is intended to use HTTP (not HTTPS) in a container, so that its host environment (currently ECS) can easily define external protocols.
