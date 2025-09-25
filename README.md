@@ -1,1 +1,14 @@
 # taxcalc-api
+
+An api to calculate income tax according to predefined tax bands.
+
+- To stand the application up, some critical secrets are needed:
+  - loggingUri - Chosen loki endpoint for logging
+  - loggingLogin - SA login for loki
+  - loggingToken - loki token
+  - dbConnectionString - Connection string for the relational database containing the tax bands.
+    - Currently works with MS SQL; small changes could enable others.
+
+- Github actions will build and test the solution at each push to a branch.
+- CI/CD deploy still pending.
+- By design, the application is intended to use HTTP (not HTTPS) in a container, so that its host environment (currently ECS) can easily define external protocols.

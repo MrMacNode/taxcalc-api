@@ -1,0 +1,13 @@
+services:
+  taxcalcapi:
+    build:
+      context: .
+      dockerfile: TaxcalcApi/Dockerfile
+    environment:
+      - dbConnectionString=${dbConnectionString}
+      - loggingUri=${loggingUri}
+      - loggingLogin=${loggingLogin}
+      - loggingToken=${loggingToken}
+      - ASPNETCORE_URLS=http://+:7149
+    ports:
+      - "7149:7149"
